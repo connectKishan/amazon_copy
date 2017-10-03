@@ -1,11 +1,11 @@
 {
-  "name": "loginActivity",
+  "name": "amazon",
   "version": "0.1.0",
-  "description": "loginActivity dependencies",
+  "description": "dependency file",
   "main": "app.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/connectKishan/assignment-liftoff.git"
+    "url": "https://github.com/connectKishan/amazon_copy.git"
   },
   "keywords": [
     "node",
