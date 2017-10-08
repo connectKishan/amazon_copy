@@ -2,7 +2,6 @@ var express=require("express");
 var morgan=require('morgan');
 var mongoose=require('mongoose');
 var app=express();
-var User=require('./models/users');
 var bodyParser=require('body-parser');
 var ejs=require('ejs');
 var engine=require('ejs-mate');
@@ -11,7 +10,10 @@ var cookieParser=require('cookie-parser');
 var flash=require('express-flash');
 
 
-mongoose.connect('mongodb://root:root@ds161164.mlab.com:61164/ecommerce',function(err){
+var secret=require('./config/secret');
+var User=require('./models/users');
+
+mongoose.connect(secret.database,function(err){
     if(err){
         console.log(err);
     }else{
@@ -28,7 +30,7 @@ app.use(cookieParser());
 app.use(session({
     resave:true,
     saveUninitialized:true,
-    secret:"kishan@ibk"
+    secret:secret.secretKey
 }));
 app.use(flash());
 app.engine('ejs',engine);
@@ -41,7 +43,7 @@ var userRoute=require('./routes/user')
 app.use(mainRoutes);
 app.use(userRoute);
 
-app.listen(4141,function(err){
+app.listen(secret.port,function(err){
     if(err) throw err;
-    console.log("Server is running at 4141 port")
+    console.log("Server is running at port"+secret.port)
 });
