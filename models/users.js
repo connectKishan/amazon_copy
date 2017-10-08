@@ -28,11 +28,12 @@ UserSchema.pre('save',function(next){
             user.password=hash;
             next();
         });
-    });*/
-    bcrypt.hash(user.Password, 10, function(err, hash) {
-        if (err) next(err)
-        user.password=hash
-})
+    })*/
+    bcrypt.hash(user.password, 10, function(err, hash) {
+        if (err) return next(err);
+        user.password=hash;
+        next();
+    });
 })
 
 //compare password hash
