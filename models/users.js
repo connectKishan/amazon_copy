@@ -1,5 +1,6 @@
 const mongoose=require('mongoose');
 const bcrypt=require('bcrypt');
+var crypto=require('crypto');
 //User Schema attributes/fields/characterstics
 var Schema=mongoose.Schema;
 var UserSchema=new Schema({
@@ -40,6 +41,14 @@ UserSchema.pre('save',function(next){
 
 UserSchema.methods.comparePassword=function(password){
 return bcrypt.compareSync(password,this.password);
+}
+
+UserSchema.methods.gravatar=function(size){
+    if(!this.size) size=200;
+    if(!this.email) return 'https://secure.gravatar.com/avatar/3833eb69115e8148e3e8b5036a734b07';
+    
+    var md5=crypto.createHash('md5').update(this.email).digest('hex');
+    return 'https://secure.gravatar.com/avatar/'+md5+''
 }
  
 module.exports=mongoose.model('User',UserSchema);

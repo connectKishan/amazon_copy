@@ -8,6 +8,10 @@ var engine=require('ejs-mate');
 var session=require('express-session');
 var cookieParser=require('cookie-parser');
 var flash=require('express-flash');
+mongoose.Promise = global.Promise;
+var MongoStore=require('connect-mongo')(session);
+var passport=require('passport');
+
 
 
 var secret=require('./config/secret');
@@ -30,9 +34,18 @@ app.use(cookieParser());
 app.use(session({
     resave:true,
     saveUninitialized:true,
-    secret:secret.secretKey
+    secret:secret.secretKey,
+    store:new MongoStore({url:secret.database,autoReconnect:true})
 }));
 app.use(flash());
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(function(req,res,next){
+    res.locals.user=req.user;
+    next();
+})
+
+
 app.engine('ejs',engine);
 app.set('view engine','ejs');
 
